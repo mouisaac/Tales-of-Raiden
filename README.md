@@ -1,5 +1,6 @@
 # Tales-of-Raiden
-CSCB58 Final Project -  Dodging Game
+CSCB58 Final Project - Dodging Game
+<br />
 <br />
 Video Link: Not yet available
 <br />
@@ -10,7 +11,7 @@ Video Link: Not yet available
 ## image2verilogtxt.py (compatible with Python 3.6)
 - A script for generating 3-bits RGB image drawing module
 <br />
-Instructions:
+### Instructions:
 1. run python3 image2verilogtxt.py (require Python 3, PILlow, and tkinter)
 2. Choose input image (any image format supported by Python PIL)
 3. Name output filename (name of the text file)
