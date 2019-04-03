@@ -7,7 +7,7 @@ Video Link: Not yet available
 <br />
 <br />
 <br />
-# image2verilogtxt.py (compatible with Python 3.6)
+## image2verilogtxt.py (compatible with Python 3.6)
 - A script for generating 3-bits RGB image drawing module
 <br />
 Instructions:
