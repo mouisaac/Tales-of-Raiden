@@ -54,13 +54,16 @@ module TalesOfRaiden
    I have my own rules and conventions for all the different variable names, I have no problem understanding them.
    However, I'm almost certain that you won't be able to grasp those at first glance.
    So I strongly recommend you to look at the comments first to better understand how each peice intertwined together.
+
+   Oh, one last thing, we have many plot modules and it might be a good idea to make them as separate verilog files.
+   We just included them in this file so you don't have to import anything other than the VPA adapter.
    */
    
    
    
    	// real reset for almost every "object"
-    reg resetn;
-    // reset for the VGA (basically restart the screen)
+    	reg resetn;
+    	// reset for the VGA (basically restart the screen)
 	 wire resetn2;
 	 // always set it to high (it is active low, so we don't accidentally turn off the VGA)
 	 assign resetn2 = alwaysOne;
