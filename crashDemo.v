@@ -159,6 +159,7 @@ module modifyDraw
 
 		if (finished_checking)
 			startChecking <= 0;
+		// whenever enemy aircraft plot a single pixel we have to start checking
 		if (plotAir_a1)
 			begin
 				ploting_coor_x <= x_coor_a1;
@@ -166,7 +167,7 @@ module modifyDraw
 				startChecking <= 1;
 			end
     end
-	 // whenever enemy aircraft plot a single pixel,
+
 	 // check that single pixel against all the pixel of player's aircraft
 	 wire enable_check, finished_checking, checkPlot;
 	 wire [8:0] check_coor_x;
@@ -183,6 +184,7 @@ module modifyDraw
 					.plot(checkPlot)
 					);
 	 reg crashed = 1'b1;
+	 // if crashed happend set active 0 crash to be 0
 	 always @(posedge CLOCK_50)
     begin
 		if (checkPlot)
