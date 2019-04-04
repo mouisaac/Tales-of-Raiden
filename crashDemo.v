@@ -194,16 +194,7 @@ module modifyDraw
 			end
     end
 
-	 // clean up when reset
-    ////scoreCounter player_and_car0(x_player, y_player, x_car0, y_car0, x_car1, y_car1, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, score, reset_game);
-    ////hex_display first_digit(score, HEX1[6:0], HEX0[6:0]); //notice score is displayed in hexadecimal
-     
-    //The following for processing player movement and car movement (make sure that only one of play or the car can move on the same clock cycle)
-    // If player is moving ,then link the vga to the player, if the car is moving, than link the vga to the car
-    // If both of them are moving in the same clock cycle (very unlikely), then move the player
-    // edited: mar 20, 5pmreset_n
-    // Notice: writeEn_player is write Enable for player; writeEn_car0 is write enable for car_0
-    // The following is for choosing to print the player movement or to print the car movement
+
     always @(posedge CLOCK_50)
     begin
 			writeEn <= 1'b0;
