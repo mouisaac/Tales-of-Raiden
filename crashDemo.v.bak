@@ -68,6 +68,18 @@ module modifyDraw
     defparam VGA.BITS_PER_COLOUR_CHANNEL = 1;
     defparam VGA.BACKGROUND_IMAGE = "TalesOfRaiden.mif";
 
+	 // make the clock really slow
+	 /*
+	 wire [27:0] counts;
+	 wire slowClock;
+	 rateDivider(
+			.clock(CLOCK_50),
+			.clear_b(1'b1),
+			.count(counts)
+			);
+	 assign slowClock = (counts == 28'd0) ? 1 : 0;*/
+    // Put your code here. Your code should produce signals x,y,colour and writeEn/plot
+    // for the VGA controller, in addition to any other functionality your design may require.
     reg alwaysOne = 1'b1;
     reg alwaysZero = 1'b0;
 	 reg [1:0] speed1 = 2'b00;
@@ -83,7 +95,6 @@ module modifyDraw
 	 //assign reset_player = (SW[17] || crashed) ? 1 : 0;
 	 aircraft p1(
 			.clock(CLOCK_50),
-			// player resetn when crashed
 			.resetn(crashed),
 			.pause(1'b0),
 			.init_x(9'd160),
@@ -108,7 +119,6 @@ module modifyDraw
 	 aircraft e1(
 			.clock(CLOCK_50),
 			.resetn(SW[17]),
-			// enemey aircraft has to pause while collision detection is checking pixels
 			.pause(startChecking),
 			.init_x(9'b0101111),
 			.init_y(8'd80),
@@ -145,7 +155,7 @@ module modifyDraw
 			.plotAir_out(plotAir_a2)
 			);
 
-	 // collision detection 
+	 // GOOD APPROACH OF CRASH
 	 reg [8:0] ploting_coor_x;
 	 reg [7:0] ploting_coor_y;
 	 reg startChecking;
@@ -165,12 +175,18 @@ module modifyDraw
 				ploting_coor_y <= y_coor_a1;
 				startChecking <= 1;
 			end
+		else if (plotAir_a2)
+			begin
+				ploting_coor_x <= x_coor_a2;
+				ploting_coor_y <= y_coor_a2;
+				startChecking <= 1;
+			end
     end
-	 // whenever enemy aircraft plot a single pixel,
-	 // check that single pixel against all the pixel of player's aircraft
+
 	 wire enable_check, finished_checking, checkPlot;
 	 wire [8:0] check_coor_x;
 	 wire [7:0] check_coor_y;
+	 
 	 Counter320 c6(.clock(CLOCK_50), .Clear_b(1'b1), .Enable(startChecking), .q(check_coor_x));
 	 assign enable_check = (check_coor_x == 9'd320) ? 1 : 0;
 	 Counter240 c4(.clock(CLOCK_50), .Clear_b(1'b1), .Enable(enable_check), .q(check_coor_y));
@@ -191,7 +207,33 @@ module modifyDraw
 				crashed <= 1'b0;
 			end
     end
-
+	 /*
+	 // bad approach of crash
+	 // constantly loop through all the coordinate of player
+	 wire [8:0] check_coor_x;
+	 wire [7:0] check_coor_y;
+	 Counter320 c6(.clock(clock), .Clear_b(1'b1), .Enable(1'b1), .q(check_coor_x));
+	 assign enable_check = (check_coor_x == 9'd320) ? 1 : 0;
+	 Counter240 c4(.clock(clock), .Clear_b(1'b1), .Enable(enable_check), .q(check_coor_y));
+	 assign finished_checking = (check_coor_y == 18'd240) ? 1 : 0;
+	 PlotAircraft a1(.clk(clock),
+					.characterPositionX(cur_coor_x_p),
+					.characterPositionY(cur_coor_y_p),
+					.drawingPositionX(check_coor_x),
+					.drawingPositionY(check_coor_y),
+					.plot(checkPlot)
+					);
+	 // check if enemy is plotting into player
+	 reg crashed;
+	 always @(*)
+    begin
+		crashed <= 1'b1;
+		if (plotAir_a1)
+			begin
+			if(check_coor_x == x_coor_a1 && check_coor_y == y_coor_a1)
+				crashed <= 1'b0;
+			end
+    end*/
 	 // clean up when reset
     ////scoreCounter player_and_car0(x_player, y_player, x_car0, y_car0, x_car1, y_car1, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, 7'd0, score, reset_game);
     ////hex_display first_digit(score, HEX1[6:0], HEX0[6:0]); //notice score is displayed in hexadecimal
