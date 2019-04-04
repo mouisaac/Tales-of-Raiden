@@ -2,7 +2,7 @@
 CSCB58 Final Project - Dodging Game
 <br />
 <br />
-Video Link: Not yet available
+Video Link: https://youtu.be/BbMmy82R8Lc
 <br />
 <br />
 <br />
