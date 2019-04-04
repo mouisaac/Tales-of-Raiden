@@ -1,5 +1,5 @@
 /*
-Arthor: Yu-Hsiang(Isaac) Mou, Ze Jin
+Author: Yu-Hsiang(Isaac) Mou, Ze Jin
 Name: Tales of Raiden (dodging game)
 Start time: March 8, 2019
 Finish time: April 2, 2019
