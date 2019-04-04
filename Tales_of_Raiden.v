@@ -981,208 +981,6 @@ module TalesOfRaiden
 	wire checw;
 	reg [19:0] cccw;
 	assign checw = (cccw == 20'd0) ? 0: 1;
-
-	//Check Crash
-	 reg [8:0] ploting_coor_x;
-	 reg [7:0] ploting_coor_y;
-	 reg startChecking = 1'b0;
-	 // check players collision
-	 always @(posedge CLOCK_50)
-    begin
-		//startChecking <= 0;
-		// check before any enemy aircraft plot
-		// into any of player's coordinate
-		// then we have a crash and reset player
-		
-		// exact pattern of the actual plotting (according to the wave design)
-		if (finished_checking)
-		begin
-			startChecking <= 1'b0;
-		end
-		if (plotAir_a1)
-			begin
-				ploting_coor_x <= x_coor_a1;
-				ploting_coor_y <= y_coor_a1;
-				startChecking <= 1'b1;
-			end
-		else if (plotAir_a1)
-         begin
-				ploting_coor_x <= x_coor_a1;                       
-				ploting_coor_y <= y_coor_a1;
-				startChecking <= 1'b1;
-         end
-		
-					
-		else if (stay2)  
-           begin
-				startChecking <= 1'b0;
-           end
-			
-		else if (plotAir_l)
-			begin
-				ploting_coor_x <= x_coor_l;
-				ploting_coor_y <= y_coor_l;
-				startChecking <= 1'b1;
-			end
-			
-		else if (plotAir_l2)
-			begin
-				ploting_coor_x <= x_coor_l2;
-				ploting_coor_y <= y_coor_l2;
-				startChecking <= 1'b1;
-			end
-		else if (plotAir_l3)
-			begin
-				ploting_coor_x <= x_coor_l3;
-				ploting_coor_y <= y_coor_l3;
-				startChecking <= 1'b1;
-		end
-		
-		else if (plotAir_l4)
-			begin
-				ploting_coor_x <= x_coor_l4;
-				ploting_coor_y <= y_coor_l4;
-				startChecking <= 1'b1;
-			end
-		
-		else if (stay1)  
-           begin
-					startChecking <= 1'b0;
-           end
-	
-		else if (plotAir_r)
-			begin
-				ploting_coor_x <= x_coor_r;
-				ploting_coor_y <= y_coor_r;
-				startChecking <= 1'b1;
-			end
-
-		else if (plotAir_r2)
-			begin
-				ploting_coor_x <= x_coor_r2;
-				ploting_coor_y <= y_coor_r2;
-				startChecking <= 1'b1;
-			end
-		
-		else if (plotAir_r3)
-			begin
-				ploting_coor_x <= x_coor_r3;
-				ploting_coor_y <= y_coor_r3;
-				startChecking <= 1'b1;
-			end
-		else if (plotAir_r4)
-			begin
-				ploting_coor_x <= x_coor_r4;
-				ploting_coor_y <= y_coor_r4;
-				startChecking <= 1'b1;
-			end
-
-		else if (plotAir_a2) 
-			begin
-				 ploting_coor_x <= x_coor_a2;              
-				 ploting_coor_y <= y_coor_a2;
-				 startChecking <= 1'b1;
-			end
-			
-		else if (plotAir_li)
-			begin
-				ploting_coor_x <= x_coor_li;
-				ploting_coor_y <= y_coor_li;
-				startChecking <= 1'b1;
-			end
-		
-		else if (plotAir_li2)
-			begin
-				ploting_coor_x <= x_coor_li2;
-				ploting_coor_y <= y_coor_li2;
-				startChecking <= 1'b1;
-
-			end
-		else if (plotAir_li3)
-			begin
-				ploting_coor_x <= x_coor_li3;
-				ploting_coor_y <= y_coor_li3;
-				startChecking <= 1'b1;
-			end
-		
-		else if (plotAir_li4)
-			begin
-				ploting_coor_x <= x_coor_li4;
-				ploting_coor_y <= y_coor_li4;
-				startChecking <= 1'b1;
-			end
-	
-		else if (stay4)  
-            begin
-					startChecking <= 1'b0;
-            end
-		
-		else if (plotAir_a4) 
-			begin
-				 ploting_coor_x <= x_coor_a4;              
-				 ploting_coor_y <= y_coor_a4;
-				 startChecking <= 1'b1;
-			end
-		
-		else if (plotAir_n2) 
-			begin
-				 ploting_coor_x <= x_coor_n2;              
-				 ploting_coor_y <= y_coor_n2;
-				 startChecking <= 1'b1;
-			end
-		
-		else if (plotAir_n3) 
-			begin
-				 ploting_coor_x <= x_coor_n3;              
-				 ploting_coor_y <= y_coor_n3;
-				 startChecking <= 1'b1;
-			end
-		
-		else if (stayboss)  
-            begin
-					startChecking <= 1'b0;
-            end
-		
-		else if (plotAir_a3) 
-			begin
-				 ploting_coor_x <= x_coor_a3;              
-				 ploting_coor_y <= y_coor_a3;
-				 startChecking <= 1'b1;
-			end
-    end
-
-	 wire enable_check, finished_checking, checkPlot;
-	 wire [8:0] check_coor_x;
-	 wire [7:0] check_coor_y;
-	 
-	 Counter320 c6(.clock(CLOCK_50), .Clear_b(1'b1), .Enable(startChecking), .q(check_coor_x));
-	 assign enable_check = (check_coor_x == 9'd320) ? 1 : 0;
-	 Counter240 c4(.clock(CLOCK_50), .Clear_b(1'b1), .Enable(enable_check), .q(check_coor_y));
-	 assign finished_checking = (check_coor_y == 18'd240) ? 1 : 0;
-	 PlotAircraft check(.clk(CLOCK_50),
-					.characterPositionX(cur_coor_x_p),
-					.characterPositionY(cur_coor_y_p),
-					.drawingPositionX(check_coor_x),
-					.drawingPositionY(check_coor_y),
-					.plot(checkPlot)
-					);
-	 // active 0 crash
-	 reg crashed = 1'b1;
-	 always @(posedge CLOCK_50)
-    begin
-		if (checkPlot)
-			begin
-			if(check_coor_x == ploting_coor_x && check_coor_y == ploting_coor_y)
-				crashed <= 1'b0;
-			end
-			/*
-			else
-			begin
-				crashed <= 1'b1;
-			end
-			*/
-    end
-    
     
     reg pppp; // pause for all aircrafts when reaching end screen
 	 assign LEDR[0:0] = ~crashed; // debug for crash
@@ -1669,7 +1467,7 @@ module aircraft(clock, resetn, pause, init_x, init_y, colour_in, speed_in, move_
 	 wire draw_enable_0;
     reg [25:0] counter_for_car0 = 26'b0000000000000000000000001;
     reg [7:0] init_y_c0 = 7'b0101010;   
-    // Instansiate datapath                              
+                             
     datapath d_d(
 			.clk(clock),
 			.ld_x(ld_x_car0),
@@ -1684,7 +1482,7 @@ module aircraft(clock, resetn, pause, init_x, init_y, colour_in, speed_in, move_
 			.stateNum(stateNum_car0),
 			.acolour(colour_in));
    
-    // Instansiate FSM control
+
     control c_c(.clk(clock),
 						  .move_r(move_right),
 						  .move_l(move_left),
@@ -1703,6 +1501,7 @@ module aircraft(clock, resetn, pause, init_x, init_y, colour_in, speed_in, move_
 	 wire enable;
 	 wire [8:0] x_coor;
 	 wire [7:0] y_coor;
+	 // counters that loop through x,y cooridinate from 0,0 to 320,240
 	 Counter320 c6(.clock(clock), .Clear_b(1'b1), .Enable(draw_enable_0), .q(x_coor));
 	 assign enable = (x_coor == 9'd320) ? 1 : 0;
 	 Counter240 c4(.clock(clock), .Clear_b(1'b1), .Enable(enable), .q(y_coor));
@@ -1710,6 +1509,7 @@ module aircraft(clock, resetn, pause, init_x, init_y, colour_in, speed_in, move_
     wire [9:0] score;
     wire reset_game;
 	 wire plotAir;
+	 // plot aircraft
 	 PlotAircraft a1(.clk(clock),
 					.characterPositionX(x_car0),
 					.characterPositionY(y_car0),
@@ -1782,6 +1582,7 @@ module smallAircraft(clock, resetn, pause, init_x, init_y, colour_in, speed_in, 
 	 wire enable;
 	 wire [8:0] x_coor;
 	 wire [7:0] y_coor;
+	 // counters that loop through x,y cooridinate from 0,0 to 320,240
 	 Counter320 c6(.clock(clock), .Clear_b(1'b1), .Enable(draw_enable_0), .q(x_coor));
 	 assign enable = (x_coor == 9'd320) ? 1 : 0;
 	 Counter240 c4(.clock(clock), .Clear_b(1'b1), .Enable(enable), .q(y_coor));
@@ -1789,6 +1590,7 @@ module smallAircraft(clock, resetn, pause, init_x, init_y, colour_in, speed_in, 
     wire [9:0] score;
     wire reset_game;
 	 wire plotAir;
+	 // plot aircraft
 	 PlotSmall a1(.clk(clock),
 					.characterPositionX(x_car0),
 					.characterPositionY(y_car0),
@@ -1859,6 +1661,7 @@ module enemyAircraft(clock, resetn, pause, init_x, init_y, colour_in, speed_in, 
 	 wire enable;
 	 wire [8:0] x_coor;
 	 wire [7:0] y_coor;
+	 // counters that loop through x,y cooridinate from 0,0 to 320,240
 	 Counter320 c6(.clock(clock), .Clear_b(1'b1), .Enable(draw_enable_0), .q(x_coor));
 	 assign enable = (x_coor == 9'd320) ? 1 : 0;
 	 Counter240 c4(.clock(clock), .Clear_b(1'b1), .Enable(enable), .q(y_coor));
@@ -1866,6 +1669,7 @@ module enemyAircraft(clock, resetn, pause, init_x, init_y, colour_in, speed_in, 
     wire [9:0] score;
     wire reset_game;
 	 wire plotAir;
+	 // plot aircraft
 	 PlotEnemyAircraft a1(.clk(clock),
 					.characterPositionX(x_car0),
 					.characterPositionY(y_car0),
@@ -1937,6 +1741,7 @@ module bossAircraft(clock, resetn, pause, init_x, init_y, colour_in, speed_in, m
 	 wire enable;
 	 wire [8:0] x_coor;
 	 wire [7:0] y_coor;
+	 // counters that loop through x,y cooridinate from 0,0 to 320,240
 	 Counter320 c6(.clock(clock), .Clear_b(1'b1), .Enable(draw_enable_0), .q(x_coor));
 	 assign enable = (x_coor == 9'd320) ? 1 : 0;
 	 Counter240 c4(.clock(clock), .Clear_b(1'b1), .Enable(enable), .q(y_coor));
@@ -1944,6 +1749,7 @@ module bossAircraft(clock, resetn, pause, init_x, init_y, colour_in, speed_in, m
     wire [9:0] score;
     wire reset_game;
 	 wire plotAir;
+	 // plot aircraft
 	 PlotBoss a1(.clk(clock),
 					.characterPositionX(x_car0),
 					.characterPositionY(y_car0),
@@ -2006,48 +1812,42 @@ module control(clk, move_r, move_l, move_d, move_u, reset_n, ld_x, ld_y, stateNu
 				// S_CLEAR is the default state that doesnt do anything
             S_CLEAR: next = S_LOAD_X;
 
+				// S_LOAD_X loads the initial x and y cooridinate of aircraft 
             S_LOAD_X: next = temp_selecting_state;
 
-				// if reset then cleanup
+				// if puase then stay in temp_selecting_state
 				// else 
 				// 	if any movement, wait for counter decrements to dingding then clear_all
-				//    else S_LOAD_Y
+				//    else stay
             temp_selecting_state: next = pause ? temp_selecting_state : (((move_r || move_l || move_d || move_u) && result_press_now) ? clear_all : temp_selecting_state);
 
-				// clear the current pixel before drawing the next pixel
+				// clear the all the pixel in the current cooridinate before incrementing the coordinate of aircraft
             clear_all:
 					 // draw the next pixel
                 begin
                     if(move_r)
-                        //next = draw_finished ? print_right : clear_all;
 								next = draw_finished ? print_right : clear_all;
-                    else if (move_l)    // if player isnt moving, then let the car move
-                        //next = draw_finished ? print_left : clear_all;
+                    else if (move_l)
 								next = draw_finished ? print_left : clear_all;
-                    else if (move_d)   // if player isnt moving, then let the car move
-                        //next = draw_finished ? print_down : clear_all;
+                    else if (move_d)
 								next = draw_finished ? print_down : clear_all;
-                    else if (move_u)   // if player isnt moving, then let the car move
-                        //next = draw_finished ? print_up : clear_all;
+                    else if (move_u)
 								next = draw_finished ? print_up : clear_all;
                 end
 
-            //print_left: next = reset_game ? S_LOAD_Y : (draw_finished ? after_drawing : print_left);
+				// print_left, print_right, print_up, print_down are states that increment the cooridinate of aircraft
 				print_left: next = drawing;
-            //print_right: next = reset_game ? S_LOAD_Y : (draw_finished ? after_drawing : print_right);
 
 				print_right: next = drawing;
-				//print_right: next = reset_game ? S_LOAD_Y : after_drawing;
 
-            //print_up: next = reset_game ? S_LOAD_Y : (draw_finished ? after_drawing : print_up);
 				print_up: next = drawing;
 
-            //print_down: next = reset_game ? S_LOAD_Y : (draw_finished ? after_drawing : print_down);
 				print_down: next = drawing;
 
-            //after_drawing: next= temp_selecting_state;
+				// stay in draw until all the pixel of aircraft has drawn
 				drawing: next = draw_finished ? after_drawing : drawing;
 
+				// after_drawing is just a transition state
 				after_drawing: next= temp_selecting_state;
 
 				default: next = S_CLEAR;
@@ -2067,32 +1867,27 @@ module control(clk, move_r, move_l, move_d, move_u, reset_n, ld_x, ld_y, stateNu
 
             cleanUp: begin
                 stateNum = 4'b0101;
-                //write = 1'b1;
                 end
+
             clear_all: begin
                 stateNum = 4'b0101;
 					 draw_enable = 1'b1;
-                //write = 1'b1;
                 end
 
             print_left: begin
                 stateNum = 4'b0111;
-                //write = 1'b1;
                 end
 
             print_right: begin
                 stateNum = 4'b1011;
-                //write = 1'b1;
                 end
 
             print_up: begin
                 stateNum = 4'b1101;
-                //write = 1'b1;
                 end
 
             print_down: begin
                 stateNum = 4'b1110;
-                //write = 1'b1;
                 end
 
 				drawing: begin
@@ -2154,7 +1949,8 @@ module datapath(clk, ld_x, ld_y, in_x, in_y, reset_n, x_coor, y_coor, colour, st
 						  x_coor <= x;
 						  y_coor <= y;
                 end
-            // The following is for moving left
+            // if the state is print_left
+				// de/increment the coordinate to the left
             else if(stateNum == 4'b0111)   
                 begin
 						if (x == 9'd3)
@@ -2163,7 +1959,8 @@ module datapath(clk, ld_x, ld_y, in_x, in_y, reset_n, x_coor, y_coor, colour, st
 							x <= x - 1'b1;
                   colour <= acolour;
                 end
-            // The following is for print_right
+            // if the state is print_right
+				// de/increment the coordinate to the right
             else if(stateNum == 4'b1011)   
                 begin
 						if (x == 9'd317)
@@ -2172,7 +1969,9 @@ module datapath(clk, ld_x, ld_y, in_x, in_y, reset_n, x_coor, y_coor, colour, st
 							x <= x + 1'b1;
                   colour <= acolour;
                 end
-            else if(stateNum == 4'b1101)//for moving up
+            // if the state is print_down
+				// de/increment the coordinate down
+            else if(stateNum == 4'b1101)
                 begin
 						if (y == 9'd3)
 							y <= 9'd237;
@@ -2180,7 +1979,8 @@ module datapath(clk, ld_x, ld_y, in_x, in_y, reset_n, x_coor, y_coor, colour, st
 							y <= y - 1'b1;
                   colour <= acolour;
                 end
-            // The following is for moving down
+            // if the state is print_up
+				// de/increment the coordinate up
             else if(stateNum == 4'b1110)
 					 begin
 						if (y == 9'd237)
@@ -2217,7 +2017,8 @@ module Counter4Bit(clock, Clear_b, Enable, q);
 
 endmodule
 
-module RateDividerForCar (clock, q, Clear_b, how_speedy);  // aircrafts are not actually cars but they are both vehicles 
+// a counter for aircraft
+module RateDividerForCar (clock, q, Clear_b, how_speedy);
     input [0:0] clock;
     input [0:0] Clear_b;
 	 input [25:0] how_speedy;
@@ -2232,7 +2033,7 @@ module RateDividerForCar (clock, q, Clear_b, how_speedy);  // aircrafts are not 
 endmodule
 
 
-// counter for x
+// counter for x, coordinate for horiziontal pixels
 module Counter320(clock, Clear_b, Enable, q);
 	input clock, Clear_b, Enable;
 	output reg [9:0] q;
@@ -2249,7 +2050,7 @@ module Counter320(clock, Clear_b, Enable, q);
 
 endmodule
 
-// counter for y
+// counter for y, coordinate for vertical pixels
 module Counter240(clock, Clear_b, Enable, q);
 	input clock, Clear_b, Enable;
 	output reg [9:0] q;
